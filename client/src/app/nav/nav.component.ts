@@ -1,4 +1,8 @@
+import { trimTrailingNulls } from '@angular/compiler/src/render3/view/util';
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AccountService } from '../_services/account.service';
+import { User } from '../_models/user';
 
 @Component({
   selector: 'app-nav',
@@ -8,13 +12,21 @@ import { Component, OnInit } from '@angular/core';
 export class NavComponent implements OnInit {
   model: any = {}
   
-  constructor() { } 
+  constructor(public accountService: AccountService) { } 
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
   }
+
 
   login(){
-    console.log(this.model);
+    this.accountService.login(this.model).subscribe(response => {
+      console.log(response);
+    },error => {
+      console.log(error);      
+    })
   }
 
+  logout(){
+    this.accountService.logout();
+  }
 }
